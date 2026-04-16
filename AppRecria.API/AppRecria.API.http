@@ -1,0 +1,6 @@
+@AppRecria.API_HostAddress = http://localhost:5034
+
+GET {{AppRecria.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,31 +1,30 @@
-﻿using AppRecria.API.Data;
+﻿using AppRecria.API.Dtos;
 using AppRecria.API.Models;
+using AppRecria.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/[controller]")]
 public class AnimaisController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAnimalService _service;
 
-    public AnimaisController(AppDbContext context)
+    public AnimaisController(IAnimalService service)
     {
-        _context = context;
+        _service = service;
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var animais = await _context.Animais.ToListAsync();
+        var animais = await _service.ListarAnimais();
         return Ok(animais);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Animal animal)
+    public async Task<IActionResult> Post(AnimalCreateDto animal)
     {
-        _context.Animais.Add(animal);
-        await _context.SaveChangesAsync();
-        return Ok(animal);
+        var result = await _service.AdicionarAnimal(animal);
+        return Ok(result);
     }
 }

@@ -1,4 +1,5 @@
-﻿using AppRecria.API.Models;
+﻿using AppRecria.API.Dtos;
+using AppRecria.API.Models;
 using AppRecria.API.Repositories;
 
 namespace AppRecria.API.Services
@@ -11,15 +12,37 @@ namespace AppRecria.API.Services
         {
             _repository = repository;
         }
-
-        public async Task<Animal> AdicionarAnimal(Animal animal)
+        public async Task<Animal> AdicionarAnimal(AnimalCreateDto animalDto)
         {
+            var animal = new Animal
+            {
+                Brinco = animalDto.Brinco,
+                Lote = animalDto.Lote,
+                DataCompra = animalDto.DataCompra,
+                PesoEntrada = animalDto.PesoEntrada,
+                TipoMedicacao = animalDto.TipoMedicacao,
+                PrecoCompra = animalDto.PrecoCompra,
+                Origem = animalDto.Origem
+            };
             return await _repository.AdicionarAnimal(animal);
         }
 
-        public async Task<List<Animal>> ListarAnimais()
+        public async Task<List<AnimalResponseDto>> ListarAnimais()
         {
-            return await _repository.ObterTodos();
+            var animais = await _repository.ObterTodos();
+
+            return animais.Select(a => new AnimalResponseDto
+            {
+                Id = a.Id,
+                Brinco = a.Brinco,
+                Lote = a.Lote,
+                PesoEntrada = a.PesoEntrada,
+                Pesagens = a.Pesagens.Select(p => new PesagemDto
+                {
+                    Peso = p.Peso,
+                    DataPesagem = p.DataPesagem
+                }).ToList()
+            }).ToList();
         }
 
         public async Task<Animal?> ObterPorBrinco(long brinco)

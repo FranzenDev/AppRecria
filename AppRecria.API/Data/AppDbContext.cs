@@ -10,5 +10,11 @@ namespace AppRecria.API.Data
 
         public DbSet<Animal> Animais { get; set; }
         public DbSet<Pesagem> Pesagens { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Animal>()
+                .HasIndex(a => a.Brinco)
+                .IsUnique();
+        }
     }
 }

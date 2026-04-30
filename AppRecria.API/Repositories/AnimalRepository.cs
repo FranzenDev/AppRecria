@@ -1,6 +1,6 @@
 ﻿using AppRecria.API.Data;
 using AppRecria.API.Models;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppRecria.API.Repositories
 {
@@ -32,7 +32,9 @@ namespace AppRecria.API.Repositories
 
         public async Task<List<Animal>> ObterTodos()
         {
-            return await _context.Animais.ToListAsync();
+            return await _context.Animais
+              .Include(a => a.Pesagens)
+              .ToListAsync();                
         }
     }
 }

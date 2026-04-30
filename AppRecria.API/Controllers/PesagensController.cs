@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 [Route("api/[controller]")]
 public class PesagensController : ControllerBase
 {
-    private readonly PesagemService _service;
+    private readonly IPesagemService _service;
 
-    public PesagensController(PesagemService service)
+    public PesagensController(IPesagemService service)
     {
         _service = service;
     }

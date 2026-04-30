@@ -10,6 +10,6 @@ namespace AppRecria.API.Models
         public int Peso { get; set; }
         public DateTime DataPesagem { get; set; }
         [JsonIgnore]
-        public Animal Animal { get; set; }
+        public Animal? Animal { get; set; }
     }
 }
